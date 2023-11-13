@@ -4,6 +4,8 @@ package TDB.MSSeguridad.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import TDB.MSSeguridad.repository.microRepository;
 import TDB.MSSeguridad.models.UsuarioModel;
@@ -29,5 +31,19 @@ public class microService {
 
     public UsuarioModel crearUsuario(UsuarioModel usuario) {
         return _microRepository.save(usuario);
+    }
+    
+    public void eliminarUsuario(int id) {
+        _microRepository.deleteById(id);
+    }
+
+    public UsuarioModel actualizarUsuario(UsuarioModel usuarioActualizado) {
+        UsuarioModel usuario = _microRepository.findById(usuarioActualizado.idUsuario).orElse(null);
+        if (usuario != null) {
+            usuario.setUsername(usuarioActualizado.getUsername());
+            usuario.setPassword(usuarioActualizado.getPassword());
+            return _microRepository.save(usuario);
+        }
+        return null;
     }
 }

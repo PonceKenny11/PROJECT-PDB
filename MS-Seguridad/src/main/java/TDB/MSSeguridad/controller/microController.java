@@ -18,11 +18,12 @@ import TDB.MSSeguridad.models.UsuarioModel;
 public class microController {
     @Autowired
     microService _MicroService;
-    
+
     @GetMapping
-    public  List<UsuarioModel> getAll(){
+    public List<UsuarioModel> getAll() {
         return _MicroService.getAll();
     }
+
     @GetMapping("/{id}")
     public UsuarioModel obtenerUsuarioPorId(@PathVariable int id) {
         return _MicroService.obtenerUsuarioPorId(id);
@@ -32,6 +33,15 @@ public class microController {
     public UsuarioModel crearUsuario(@RequestBody UsuarioModel usuario) {
         return _MicroService.crearUsuario(usuario);
     }
-    
-   
+
+    @DeleteMapping("/{id}")
+    public void eliminarUsuario(@PathVariable int id) {
+        _MicroService.eliminarUsuario(id);
+    }
+
+    @PostMapping("/editar")
+    public UsuarioModel actualizarUsuario(@RequestBody UsuarioModel usuarioActualizado) {
+        return _MicroService.actualizarUsuario(usuarioActualizado);
+    }
+
 }
