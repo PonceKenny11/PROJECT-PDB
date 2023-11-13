@@ -23,7 +23,15 @@ public class microController {
     public  List<UsuarioModel> getAll(){
         return _MicroService.getAll();
     }
+    @GetMapping("/{id}")
+    public UsuarioModel obtenerUsuarioPorId(@PathVariable int id) {
+        return _MicroService.obtenerUsuarioPorId(id);
+    }
 
+    @PostMapping
+    public UsuarioModel crearUsuario(@RequestBody UsuarioModel usuario) {
+        return _MicroService.crearUsuario(usuario);
+    }
     
    
 }

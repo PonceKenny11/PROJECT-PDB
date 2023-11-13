@@ -22,4 +22,12 @@ public class microService {
     }
 
     /*aqui se colocaran los demas methods */
+
+    public UsuarioModel obtenerUsuarioPorId(int id) {
+        return _microRepository.findById(id).orElse(null);
+    }
+
+    public UsuarioModel crearUsuario(UsuarioModel usuario) {
+        return _microRepository.save(usuario);
+    }
 }
