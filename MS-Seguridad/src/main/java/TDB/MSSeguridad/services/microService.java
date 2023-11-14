@@ -4,8 +4,7 @@ package TDB.MSSeguridad.services;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import TDB.MSSeguridad.repository.microRepository;
 import TDB.MSSeguridad.models.UsuarioModel;

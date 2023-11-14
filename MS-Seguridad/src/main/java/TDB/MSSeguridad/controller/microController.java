@@ -29,10 +29,7 @@ public class microController {
         return _MicroService.obtenerUsuarioPorId(id);
     }
 
-    @PostMapping
-    public UsuarioModel crearUsuario(@RequestBody UsuarioModel usuario) {
-        return _MicroService.crearUsuario(usuario);
-    }
+    
 
     @DeleteMapping("/{id}")
     public void eliminarUsuario(@PathVariable int id) {
@@ -44,4 +41,8 @@ public class microController {
         return _MicroService.actualizarUsuario(usuarioActualizado);
     }
 
+    @PostMapping
+    public UsuarioModel crearUsuario(@RequestBody UsuarioModel usuario){
+        return _MicroService.crearUsuario(usuario);
+    }
 }
