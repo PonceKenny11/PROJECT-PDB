@@ -22,7 +22,6 @@ public class microService {
         return (List<UsuarioModel>) _microRepository.findAll();
     }
 
-    /*aqui se colocaran los demas methods */
 
     public UsuarioModel obtenerUsuarioPorId(int id) {
         return _microRepository.findById(id).orElse(null);
@@ -47,4 +46,9 @@ public class microService {
         }
         return null;
     }
+
+    public UsuarioModel iniciarSesion(String correo_usuario, String password_usuario){
+        return _microRepository.findByCorreoAndPass(correo_usuario, password_usuario);
+    }
+
 }
