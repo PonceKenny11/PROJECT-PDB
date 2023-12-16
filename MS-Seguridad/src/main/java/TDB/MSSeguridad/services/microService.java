@@ -40,7 +40,9 @@ public class microService {
         UsuarioModel usuario = _microRepository.findById(usuarioActualizado.idUsuario).orElse(null);
         if (usuario != null) {
             usuario.setUsername(usuarioActualizado.getUsername());
+            usuario.setCorreo(usuarioActualizado.getCorreo());
             usuario.setPassword(usuarioActualizado.getPassword());
+            usuario.setFechaCreada(usuarioActualizado.getFechaCreada());
             return _microRepository.save(usuario);
         }
         return null;

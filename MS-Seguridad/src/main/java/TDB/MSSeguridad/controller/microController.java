@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import TDB.MSSeguridad.services.microService;
 import TDB.MSSeguridad.models.UsuarioModel;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,7 +38,7 @@ public class microController {
         _MicroService.eliminarUsuario(id);
     }
 
-    @PostMapping("/editar")
+    @PutMapping("/editar")
     public UsuarioModel actualizarUsuario(@RequestBody UsuarioModel usuarioActualizado) {
         return _MicroService.actualizarUsuario(usuarioActualizado);
     }
