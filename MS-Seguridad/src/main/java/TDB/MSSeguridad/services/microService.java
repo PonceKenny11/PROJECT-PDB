@@ -48,7 +48,7 @@ public class microService {
     }
 
     public UsuarioModel iniciarSesion(String correo_usuario, String password_usuario){
-        return _microRepository.findByCorreoAndPass(correo_usuario, password_usuario);
+        return _microRepository.findByCorreoAndPassword(correo_usuario, password_usuario);
     }
 
 }

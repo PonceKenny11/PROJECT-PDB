@@ -28,17 +28,30 @@ public class microController {
 
         try {
             List<UsuarioModel> usuarios = _MicroService.getAll();
-             return new ResponseEntity<>(usuarios, HttpStatus.OK); //mostrar un mensaje exitoso 200k y la lista de usuarios
+            return new ResponseEntity<>(usuarios, HttpStatus.OK); // mostrar un mensaje exitoso 200k y la lista de
+                                                                  // usuarios
         } catch (Exception e) {
-            msjDev = "Excepcion no manejada, no se pudo obtener lista de usuarios" +e.getMessage();
-            return new ResponseEntity<>( msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
+            msjDev = "Excepcion no manejada, no se pudo obtener lista de usuarios" + e.getMessage();
+            return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
         }
- 
+
     }
 
     @GetMapping("/{id}")
-    public UsuarioModel obtenerUsuarioPorId(@PathVariable int id) {
-        return _MicroService.obtenerUsuarioPorId(id);
+    public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable int id) {
+        try {
+            UsuarioModel usuario = _MicroService.obtenerUsuarioPorId(id);
+            if (usuario != null) {
+                return new ResponseEntity<>(usuario, HttpStatus.OK); // mostrar un mensaje exitoso 200
+            } else {
+                msjDev = "El usuario No existe";
+                return new ResponseEntity<>(msjDev, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            msjDev = "Excepcion no manejada => " + e.getMessage();
+            return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @DeleteMapping("/{id}")
@@ -60,19 +73,18 @@ public class microController {
     @PostMapping("/login")
     public ResponseEntity<?> IniciarSesion(@RequestBody UsuarioModel usuario) {
 
-
         try {
-             UsuarioModel userAuth =  _MicroService.iniciarSesion(usuario.getCorreo(), usuario.getCorreo());
+            UsuarioModel userAuth = _MicroService.iniciarSesion(usuario.getCorreo(), usuario.getPassword());
 
-            if(userAuth != null){
+            if (userAuth != null) {
                 return new ResponseEntity<>("Inicio de Sesion Exitotoso", HttpStatus.OK);
-            }else{
+            } else {
                 return new ResponseEntity<>("Las Credenciales son Incorrectas", HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             // TODO: handle exception
             msjDev = "Excepcion de Iniciar Sesion ..." + e.getMessage();
-
+            
             return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
