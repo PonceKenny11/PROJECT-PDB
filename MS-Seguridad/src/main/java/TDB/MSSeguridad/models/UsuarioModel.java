@@ -14,8 +14,9 @@ import jakarta.persistence.Table;
 @Table(name="usuarios")
 public class UsuarioModel {
     
-    public UsuarioModel(){
+    public UsuarioModel(){ 
 
+        
     }
 
     @Id
