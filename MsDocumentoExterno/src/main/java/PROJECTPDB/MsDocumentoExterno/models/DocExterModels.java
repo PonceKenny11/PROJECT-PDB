@@ -52,6 +52,98 @@ public class DocExterModels {
 
 
 
+    public int getIdDocExt() {
+        return this.IdDocExt;
+    }
+
+    public void setIdDocExt(int IdDocExt) {
+        this.IdDocExt = IdDocExt;
+    }
+
+    public String getNombreArchivo() {
+        return this.NombreArchivo;
+    }
+
+    public void setNombreArchivo(String NombreArchivo) {
+        this.NombreArchivo = NombreArchivo;
+    }
+
+    public String getCodigoDocumento() {
+        return this.CodigoDocumento;
+    }
+
+    public void setCodigoDocumento(String CodigoDocumento) {
+        this.CodigoDocumento = CodigoDocumento;
+    }
+
+    public Date getFechaEmision() {
+        return this.FechaEmision;
+    }
+
+    public void setFechaEmision(Date FechaEmision) {
+        this.FechaEmision = FechaEmision;
+    }
+
+    public Date getFechaRecepcion() {
+        return this.FechaRecepcion;
+    }
+
+    public void setFechaRecepcion(Date FechaRecepcion) {
+        this.FechaRecepcion = FechaRecepcion;
+    }
+
+    public String getAsuntoDoc() {
+        return this.AsuntoDoc;
+    }
+
+    public void setAsuntoDoc(String AsuntoDoc) {
+        this.AsuntoDoc = AsuntoDoc;
+    }
+
+    public Boolean isEstadoDoc() {
+        return this.EstadoDoc;
+    }
+
+    public Boolean getEstadoDoc() {
+        return this.EstadoDoc;
+    }
+
+    public void setEstadoDoc(Boolean EstadoDoc) {
+        this.EstadoDoc = EstadoDoc;
+    }
+
+    public int getNumeroFolio() {
+        return this.NumeroFolio;
+    }
+
+    public void setNumeroFolio(int NumeroFolio) {
+        this.NumeroFolio = NumeroFolio;
+    }
+
+    public String getTipoDocumento() {
+        return this.TipoDocumento;
+    }
+
+    public void setTipoDocumento(String TipoDocumento) {
+        this.TipoDocumento = TipoDocumento;
+    }
+
+    public int getUsuarioModificacion() {
+        return this.UsuarioModificacion;
+    }
+
+    public void setUsuarioModificacion(int UsuarioModificacion) {
+        this.UsuarioModificacion = UsuarioModificacion;
+    }
+
+    public int getIdRecepcionExt() {
+        return this.IdRecepcionExt;
+    }
+
+    public void setIdRecepcionExt(int IdRecepcionExt) {
+        this.IdRecepcionExt = IdRecepcionExt;
+    }
+
 
     
 
