@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
 
 @Repository
-public interface DocExterRepository extends CrudRepository<DocExterModels, Long> {
-
-    DocExterModels findByCorreoAndPassword(String correo, String password);
+public interface DocExterRepository extends CrudRepository<DocExterModels, Integer> {
 
 }
