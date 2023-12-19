@@ -17,61 +17,42 @@ public class DocExterModels {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_user")
-    public int idUser;
+    @Column(name="id_doc_ext")
+    public int IdDocExt;
 
-    @Column(name="Nombre_user")    
-    public String username;
+    @Column(name="nombre_archivo")    
+    public String NombreArchivo;
 
-    @Column(name="contraseña_user")
-    public String pasword;
+    @Column(name="codigo_documento")
+    public String CodigoDocumento;
 
-    @Column(name="correo_user")
-    public String correo;
+    @Column(name="fecha_emision")
+    public Date FechaEmision;
 
-    @Column(name="fecha_creacion")
-    public Date fechaCreada;
+    @Column(name="fecha_recepcion")
+    public Date FechaRecepcion;
+
+     @Column(name="asunto_doc")    
+    public String AsuntoDoc;
+
+     @Column(name="estado_doc")    
+    public Boolean EstadoDoc;
+
+     @Column(name="numero_folio")    
+    public int NumeroFolio;
+
+     @Column(name="tipo_documento")    
+    public String TipoDocumento;
+
+     @Column(name="usuario_modificacion")    
+    public int UsuarioModificacion;
+
+     @Column(name="id_recepcion_ext")    
+    public int IdRecepcionExt;
 
 
-    public int getIdUser() {
-        return this.idUser;
-    }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPasword() {
-        return this.pasword;
-    }
-
-    public void setPasword(String pasword) {
-        this.pasword = pasword;
-    }
-
-    public String getCorreo() {
-        return this.correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public Date getFechaCreada() {
-        return this.fechaCreada;
-    }
-
-    public void setFechaCreada(Date fechaCreada) {
-        this.fechaCreada = fechaCreada;
-    }
     
 
 }
