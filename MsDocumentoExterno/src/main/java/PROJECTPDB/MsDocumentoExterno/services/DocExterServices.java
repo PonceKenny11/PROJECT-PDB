@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+
 import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
 import PROJECTPDB.MsDocumentoExterno.repository.DocExterRepository;
 
@@ -16,6 +18,7 @@ public class DocExterServices {
     
     @Autowired
     DocExterRepository _DocExterRepository;
+  
 
     public List<DocExterModels> getAll(){
         return (List<DocExterModels>) _DocExterRepository.findAll();
@@ -50,7 +53,6 @@ public class DocExterServices {
         }
         return null;
     }
-
   
     
     

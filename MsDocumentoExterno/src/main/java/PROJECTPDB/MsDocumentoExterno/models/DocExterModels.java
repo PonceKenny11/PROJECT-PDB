@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_Usuario_Admin")
+@Table(name = "doc_externo")
 public class DocExterModels {
     public DocExterModels(){
 
@@ -20,7 +20,7 @@ public class DocExterModels {
     @Column(name="id_doc_ext")
     public int IdDocExt;
 
-    @Column(name="nombre_archivo")    
+    @Column(name="nombre_archivo",  nullable = true)    
     public String NombreArchivo;
 
     @Column(name="codigo_documento")
@@ -32,7 +32,7 @@ public class DocExterModels {
     @Column(name="fecha_recepcion")
     public Date FechaRecepcion;
 
-     @Column(name="asunto_doc")    
+     @Column(name="asunto_doc",  nullable = true)    
     public String AsuntoDoc;
 
      @Column(name="estado_doc")    
@@ -47,8 +47,7 @@ public class DocExterModels {
      @Column(name="usuario_modificacion")    
     public int UsuarioModificacion;
 
-     @Column(name="id_recepcion_ext")    
-    public int IdRecepcionExt;
+ 
 
 
 
@@ -136,13 +135,6 @@ public class DocExterModels {
         this.UsuarioModificacion = UsuarioModificacion;
     }
 
-    public int getIdRecepcionExt() {
-        return this.IdRecepcionExt;
-    }
-
-    public void setIdRecepcionExt(int IdRecepcionExt) {
-        this.IdRecepcionExt = IdRecepcionExt;
-    }
 
 
     
