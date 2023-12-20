@@ -7,6 +7,6 @@ import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
 
 @Repository
 public interface DocExterRepository extends CrudRepository<DocExterModels, Integer> {
-    DocExterModels findByCorreoAndPassword(String correo, String password);
+
 
 }
