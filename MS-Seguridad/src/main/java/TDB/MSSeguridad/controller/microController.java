@@ -1,7 +1,7 @@
 package TDB.MSSeguridad.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,27 +12,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import TDB.MSSeguridad.models.Entity.UsuarioModel;
 import TDB.MSSeguridad.services.microService;
-import TDB.MSSeguridad.models.UsuarioModel;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
+@Slf4j
 public class microController {
-    @Autowired
-    microService _MicroService;
-    private String msjDev;
+
+    private final  microService servicio;
+
 
     @GetMapping
     public ResponseEntity<?> getAll() {
 
         try {
-            List<UsuarioModel> usuarios = _MicroService.getAll();
+            List<UsuarioModel> usuarios = servicio.getAll();
             return new ResponseEntity<>(usuarios, HttpStatus.OK); // mostrar un mensaje exitoso 200k y la lista de
                                                                   // usuarios
         } catch (Exception e) {
-            msjDev = "Excepcion no manejada, no se pudo obtener lista de usuarios" + e.getMessage();
-            return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error en Exeption: ", e);
+            return new ResponseEntity<String>("Error al Crear Cuenta en el Servidor", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -40,33 +45,36 @@ public class microController {
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable int id) {
         try {
-            UsuarioModel usuario = _MicroService.obtenerUsuarioPorId(id);
+            UsuarioModel usuario = servicio.obtenerUsuarioPorId(id);
             if (usuario != null) {
+                log.info("Usuario Existente! =>"+usuario.getUsername());
                 return new ResponseEntity<>(usuario, HttpStatus.OK); // mostrar un mensaje exitoso 200
             } else {
-                msjDev = "El usuario No existe";
-                return new ResponseEntity<>(msjDev, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<String>("El Usuario no Existe o ha sido eliminado!", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            msjDev = "Excepcion no manejada => " + e.getMessage();
-            return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error en Exeption No manejada: ", e);
+            return new ResponseEntity<String>("Error Obtener Cuenta en el Servidor", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable int id) {
-        _MicroService.eliminarUsuario(id);
+    public ResponseEntity<?> eliminarUsuario(@PathVariable int id)throws Exception {
+        servicio.eliminarUsuario(id);
+        return new ResponseEntity<String>("Esta Cuenta Usuario ha sido Eliminado Exitosamente", HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/editar")
     public UsuarioModel actualizarUsuario(@RequestBody UsuarioModel usuarioActualizado) {
-        return _MicroService.actualizarUsuario(usuarioActualizado);
+        return servicio.actualizarUsuario(usuarioActualizado);
     }
 
-    @PostMapping
-    public UsuarioModel crearUsuario(@RequestBody UsuarioModel usuario) {
-        return _MicroService.crearUsuario(usuario);
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioModel usuario) throws Exception{
+        UsuarioModel user = servicio.crearUsuario(usuario);
+        log.info("Cuenta del Usuario ", user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     // login
@@ -74,18 +82,17 @@ public class microController {
     public ResponseEntity<?> IniciarSesion(@RequestBody UsuarioModel usuario) {
 
         try {
-            UsuarioModel userAuth = _MicroService.iniciarSesion(usuario.getCorreo(), usuario.getPassword());
-
+            UsuarioModel userAuth = servicio.iniciarSesion(usuario.getCorreo(), usuario.getPassword());
+            log.info("Post: Username {} - Password {}", usuario.getUsername(), usuario.getPassword());
             if (userAuth != null) {
-                return new ResponseEntity<>("Inicio de Sesion Exitotoso", HttpStatus.OK);
+                return new ResponseEntity<String>("Inicio de Sesion Exitotoso", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Las Credenciales son Incorrectas", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<String>("Las Credenciales son Incorrectas, Intentelo de nuevo...!", HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             // TODO: handle exception
-            msjDev = "Excepcion de Iniciar Sesion ..." + e.getMessage();
-            
-            return new ResponseEntity<>(msjDev, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error en Exeption No manejada: ", e);
+            return new ResponseEntity<String>("Error al Iniciar Sesion en el Servidor", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,4 +1,4 @@
-package TDB.MSSeguridad.dto;
+package TDB.MSSeguridad.models.dto;
 import java.io.Serializable;
 
 public class microResponse implements Serializable{

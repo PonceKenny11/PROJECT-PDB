@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import TDB.MSSeguridad.models.Entity.UsuarioModel;
 import TDB.MSSeguridad.repository.microRepository;
-import TDB.MSSeguridad.models.UsuarioModel;
 
 @Service
 public class microService {
