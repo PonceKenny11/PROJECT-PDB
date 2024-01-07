@@ -3,7 +3,7 @@ package PROJECTPDB.MsDocumentoExterno.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
+import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 
 @Repository
 public interface DocExterRepository extends CrudRepository<DocExterModels, Integer> {

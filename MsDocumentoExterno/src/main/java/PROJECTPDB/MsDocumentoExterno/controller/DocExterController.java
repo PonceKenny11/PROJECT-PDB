@@ -1,12 +1,8 @@
 package PROJECTPDB.MsDocumentoExterno.controller;
 
-
-
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;  // Importa la clase LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,28 +13,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
+
+import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentRequest;
+import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 import PROJECTPDB.MsDocumentoExterno.services.DocExterServices;
-import org.springframework.web.bind.annotation.PutMapping;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 
 
 
 @RestController
-@RequestMapping("/api/documentos")
+@RequestMapping("/api/documentos/externo")
+@RequiredArgsConstructor
+@Slf4j
 public class DocExterController {
     
-    // Declara una instancia de Logger
-    private static final Logger log = LoggerFactory.getLogger(DocExterController.class);
 
-    @Autowired
-    private DocExterServices docExterServices;
+    private final DocExterServices docServices;
 
 
     @GetMapping
     public ResponseEntity<?> getAllDocuments(){
         try {
-            List<DocExterModels> documents = docExterServices.getAll();
+            List<DocExterModels> documents = docServices.getAll();
             return new ResponseEntity<>(documents, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             log.error("Error en Obtener datos", e);
@@ -48,9 +48,9 @@ public class DocExterController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOneDocument(@PathVariable int id) {
+    public ResponseEntity<?> getOneDocument(@PathVariable Integer id) {
         try {
-            DocExterModels document = docExterServices.obtenerDocPorId(id);
+            DocumentResponse document = docServices.obtenerPorId(id);
             if (document != null) {
                 return new ResponseEntity<>(document, HttpStatus.OK);
             }else{
@@ -64,22 +64,22 @@ public class DocExterController {
     
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearDocumento(@RequestBody DocExterModels documento) {
+    public ResponseEntity<?> crearDocumento(@RequestBody DocumentRequest documento) {
         try {
-            DocExterModels nuevoDocumento = docExterServices.crearDoc(documento);
-            return new ResponseEntity<>(nuevoDocumento, HttpStatus.CREATED);
+            // Estas recibiendo el Request, a ese request debes mapearlo al model , El request esta mapeado al model que lo considero como entity
+            docServices.crearDocumento(documento);
+            return new ResponseEntity<String>("Nuevo Documento Created Succefull!", HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the exception for developer
-            log.error("Error de excepciones al crear el documento", e);
-
-            // Return a user-friendly error message
-            return new ResponseEntity<>("No se pudo crear el documento. Por favor, inténtelo de nuevo más tarde.", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Error de manejo de excepciones al crear el documento", e);
+          return new ResponseEntity<>("No se pudo crear el documento. Por favor, inténtelo de nuevo más tarde.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
  
     }
 
+  
 
-    @PutMapping("/editar")
+
+    /*@PutMapping("/editar")
     public ResponseEntity<?> ActualizarDocumento(@RequestBody DocExterModels documentoModel) {
     try {
         
@@ -91,13 +91,13 @@ public class DocExterController {
     }
 
 
-    }
+    }*/
     
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarDocumento(@PathVariable int id){
         try {
-            docExterServices.eliminarDoc(id);
+            docServices.eliminarDoc(id);
             log.info("Documento Eliminado Con Exito!");
             return new ResponseEntity<>("El Documento Externo ha Sido Eliminado",HttpStatus.ACCEPTED);
         } catch (Exception e) {

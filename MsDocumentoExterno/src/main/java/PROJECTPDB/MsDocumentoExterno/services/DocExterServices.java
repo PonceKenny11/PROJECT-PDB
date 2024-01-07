@@ -1,42 +1,58 @@
 package PROJECTPDB.MsDocumentoExterno.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-import PROJECTPDB.MsDocumentoExterno.models.DocExterModels;
+import PROJECTPDB.MsDocumentoExterno.models.DTO.DocMapper;
+import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentRequest;
+import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 import PROJECTPDB.MsDocumentoExterno.repository.DocExterRepository;
 
-@Service
-public class DocExterServices {
-    public DocExterServices(){
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-    }
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class DocExterServices {
+
     
-    @Autowired
-    DocExterRepository _DocExterRepository;
+    private final DocExterRepository _DocExterRepository;
   
 
     public List<DocExterModels> getAll(){
         return (List<DocExterModels>) _DocExterRepository.findAll();
     }
 
-    public DocExterModels obtenerDocPorId(int id) {
-        return _DocExterRepository.findById(id).orElse(null);
+
+    public DocumentResponse obtenerPorId(Integer id){
+        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(id);
+
+        if (documentOpticional != null) {
+            DocExterModels documentEntity = documentOpticional.get();
+            log.info("Se Obtuvo por id: {}", id);
+            return DocMapper.mapToDocResponse(documentEntity);
+        }else{
+            log.error("No existe este id{}");
+            return null;
+        }
     }
 
-    public DocExterModels crearDoc(DocExterModels documento) {
-        return _DocExterRepository.save(documento);
+    public void crearDocumento(DocumentRequest documentoRequest) {
+        var document = DocMapper.mapToDocEntity(documentoRequest); 
+         _DocExterRepository.save(document);
+
     }
 
     public void eliminarDoc(int id) {
          _DocExterRepository.deleteById(id);
     }
 
-    public DocExterModels actualizarUsuario(DocExterModels documentoExterActualizado) {
+  /*  public DocExterModels actualizarUsuario(DocExterModels documentoExterActualizado) {
+        
         DocExterModels documentoExter = _DocExterRepository.findById(documentoExterActualizado.IdDocExt).orElse(null);
         if (documentoExter != null) {
             documentoExter.setNombreArchivo(documentoExterActualizado.getNombreArchivo());
@@ -53,7 +69,7 @@ public class DocExterServices {
         }
         return null;
     }
-  
+  */
     
     
 }
