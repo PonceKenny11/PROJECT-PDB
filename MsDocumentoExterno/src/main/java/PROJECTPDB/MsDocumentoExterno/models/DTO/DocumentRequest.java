@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class DocumentRequest {
-
+    private Integer IdDoc;
     private String NombreArchivo;
     private String CodigoDocumento;
     private Date FechaEmision;

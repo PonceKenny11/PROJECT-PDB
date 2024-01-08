@@ -32,17 +32,17 @@ import lombok.extern.slf4j.Slf4j;
 public class DocExterController {
     
 
-    private final DocExterServices docServices;
+    private final DocExterServices documentServices;
 
 
     @GetMapping
     public ResponseEntity<?> getAllDocuments(){
         try {
-            List<DocExterModels> documents = docServices.getAll();
+            List<DocExterModels> documents = documentServices.getAll();
             return new ResponseEntity<>(documents, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             log.error("Error en Obtener datos", e);
-            return new ResponseEntity<>("Error en en el seervidor"+e, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error en el Servidor, Intentelo mas tarde!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,15 +50,15 @@ public class DocExterController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getOneDocument(@PathVariable Integer id) {
         try {
-            DocumentResponse document = docServices.obtenerPorId(id);
+            DocumentResponse document = documentServices.ExisteOrNoDocument(id);
             if (document != null) {
                 return new ResponseEntity<>(document, HttpStatus.OK);
             }else{
-                return new ResponseEntity<>("No Existe Documento Externo", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<String>("No Existe Documento Externo", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             log.error("Error en manejo de excepciones"+e);
-            return new ResponseEntity<>("Error en servidor para obtener datos Documentos", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("Error en servidor para obtener datos Documentos", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -67,11 +67,11 @@ public class DocExterController {
     public ResponseEntity<?> crearDocumento(@RequestBody DocumentRequest documento) {
         try {
             // Estas recibiendo el Request, a ese request debes mapearlo al model , El request esta mapeado al model que lo considero como entity
-            docServices.crearDocumento(documento);
+            documentServices.crearDocumento(documento);
             return new ResponseEntity<String>("Nuevo Documento Created Succefull!", HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error de manejo de excepciones al crear el documento", e);
-          return new ResponseEntity<>("No se pudo crear el documento. Por favor, inténtelo de nuevo más tarde.", HttpStatus.INTERNAL_SERVER_ERROR);
+          return new ResponseEntity<String>("No se pudo crear el documento. Por favor, inténtelo de nuevo más tarde.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
  
     }
@@ -95,11 +95,10 @@ public class DocExterController {
     
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarDocumento(@PathVariable int id){
+    public ResponseEntity<?> eliminarDocumento(@PathVariable Integer id){
         try {
-            docServices.eliminarDoc(id);
-            log.info("Documento Eliminado Con Exito!");
-            return new ResponseEntity<>("El Documento Externo ha Sido Eliminado",HttpStatus.ACCEPTED);
+            documentServices.eliminarDocumento(id);
+            return new ResponseEntity<String>("El Documento Externo ha Sido Eliminado",HttpStatus.FOUND);
         } catch (Exception e) {
             log.error("Error al eliminar el documento", e);
             return new ResponseEntity<>("No se Pudo eliminar el Documento",HttpStatus.INTERNAL_SERVER_ERROR);

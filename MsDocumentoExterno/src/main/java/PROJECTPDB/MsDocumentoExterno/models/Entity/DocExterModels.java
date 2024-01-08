@@ -25,7 +25,7 @@ public class DocExterModels {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    //estos atributos deben ser idénticos a la bd 
+    // estos atributos deben ser idénticos a la bd
     private Integer id_docext;
     private String nombre_archivo;
     private String codigo_documento;
@@ -36,35 +36,36 @@ public class DocExterModels {
     private Integer numero_folio;
     private String tipo_documento;
     private Integer user_update;
-    /*@Column(name="id_docext")
-    public Integer IdDocExt;
-
-    @Column(name="nombre_archivo")    
-    public String NombreArchivo;
-
-    @Column(name="codigo_documento")
-    public String CodigoDocumento;
-
-    @Column(name="fecha_emision")
-    public Date FechaEmision;
-
-    @Column(name="fecha_recepcion")
-    public Date FechaRecepcion;
-
-     @Column(name="asunto_doc")    
-    public String AsuntoDoc;
-
-     @Column(name="estado_doc")    
-    public Boolean EstadoDoc;
-
-     @Column(name="numero_folio")    
-    public Integer NumeroFolio;
-
-     @Column(name="tipo_documento")    
-    public String TipoDocumento;
-
-     @Column(name="user_update")    
-    public Integer UsuarioModificacion;*/
-
+    /*
+     * @Column(name="id_docext")
+     * public Integer IdDocExt;
+     * 
+     * @Column(name="nombre_archivo")
+     * public String NombreArchivo;
+     * 
+     * @Column(name="codigo_documento")
+     * public String CodigoDocumento;
+     * 
+     * @Column(name="fecha_emision")
+     * public Date FechaEmision;
+     * 
+     * @Column(name="fecha_recepcion")
+     * public Date FechaRecepcion;
+     * 
+     * @Column(name="asunto_doc")
+     * public String AsuntoDoc;
+     * 
+     * @Column(name="estado_doc")
+     * public Boolean EstadoDoc;
+     * 
+     * @Column(name="numero_folio")
+     * public Integer NumeroFolio;
+     * 
+     * @Column(name="tipo_documento")
+     * public String TipoDocumento;
+     * 
+     * @Column(name="user_update")
+     * public Integer UsuarioModificacion;
+     */
 
 }
