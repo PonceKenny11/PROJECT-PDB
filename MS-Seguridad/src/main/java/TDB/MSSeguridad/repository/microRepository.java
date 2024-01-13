@@ -8,5 +8,5 @@ import TDB.MSSeguridad.models.Entity.UsuarioModel;
 @Repository
 public interface microRepository  extends CrudRepository<UsuarioModel, Integer>{
 
-    UsuarioModel findByCorreoAndPassword(String correo, String password);
+   
 } 

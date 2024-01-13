@@ -2,6 +2,8 @@ package TDB.MSSeguridad.services;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +48,20 @@ public class microService {
         return null;
     }
 
-    public UsuarioModel iniciarSesion(String correo_usuario, String password_usuario){
-        return _microRepository.findByCorreoAndPassword(correo_usuario, password_usuario);
+    public Boolean LoginIn(String correo_usuario, String password_usuario){
+        List<UsuarioModel> userResult = (List<UsuarioModel>)_microRepository.findAll();
+        List<UsuarioModel> userFiltro = userResult.stream().filter(user -> user.getCorreo().equals(correo_usuario) && user.getPassword().equals(password_usuario))
+                                        .collect(Collectors.toList());
+
+        if(userFiltro.isEmpty()){
+            return false;
+        }
+
+        return true;
     }
+
+    /*public UsuarioModel iniciarSesion(String correo_usuario, String password_usuario){
+        return _microRepository.findByCorreoAndPassword(correo_usuario, password_usuario);
+    }*/
 
 }

@@ -37,7 +37,7 @@ public class microController {
                                                                   // usuarios
         } catch (Exception e) {
             log.error("Error en Exeption: ", e);
-            return new ResponseEntity<String>("Error al Crear Cuenta en el Servidor", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("Error en el Servidor", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -65,7 +65,7 @@ public class microController {
         return new ResponseEntity<String>("Esta Cuenta Usuario ha sido Eliminado Exitosamente", HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/editar")
+    @PutMapping("/edit")
     public UsuarioModel actualizarUsuario(@RequestBody UsuarioModel usuarioActualizado) {
         return servicio.actualizarUsuario(usuarioActualizado);
     }
@@ -82,10 +82,10 @@ public class microController {
     public ResponseEntity<?> IniciarSesion(@RequestBody UsuarioModel usuario) {
 
         try {
-            UsuarioModel userAuth = servicio.iniciarSesion(usuario.getCorreo(), usuario.getPassword());
+            Boolean authentificar = servicio.LoginIn(usuario.getCorreo(), usuario.getPassword());
             log.info("Post: Username {} - Password {}", usuario.getUsername(), usuario.getPassword());
-            if (userAuth != null) {
-                return new ResponseEntity<String>("Inicio de Sesion Exitotoso", HttpStatus.OK);
+            if (authentificar == true) {
+                return new ResponseEntity<String>("Inicio de Sesion Exitotoso", HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<String>("Las Credenciales son Incorrectas, Intentelo de nuevo...!", HttpStatus.UNAUTHORIZED);
             }
