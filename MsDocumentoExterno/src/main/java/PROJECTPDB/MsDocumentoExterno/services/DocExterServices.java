@@ -1,5 +1,6 @@
 package PROJECTPDB.MsDocumentoExterno.services;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,10 @@ public class DocExterServices {
     }
 
     public DocumentResponse ExisteOrNoDocument(Integer docID) {
-        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);// Intenta obtener un documento externo de la base de datos con el metodo del repositorio
+        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);// Intenta obtener un
+                                                                                          // documento externo de la
+                                                                                          // base de datos con el metodo
+                                                                                          // del repositorio
         // l resultado se coloca en un Optional porque el documento puede o no existir.
         log.info("Se Obtuvo por id: {}", docID);
         if (documentOpticional.isPresent()) {// Verifica si el Optional tiene un valor presente, es decir, si se ha
@@ -58,33 +62,31 @@ public class DocExterServices {
 
     }
 
- 
-    /*
-     * public DocExterModels actualizarUsuario(DocExterModels
-     * documentoExterActualizado) {
-     * 
-     * DocExterModels documentoExter =
-     * _DocExterRepository.findById(documentoExterActualizado.IdDocExt).orElse(null)
-     * ;
-     * if (documentoExter != null) {
-     * documentoExter.setNombreArchivo(documentoExterActualizado.getNombreArchivo())
-     * ;
-     * documentoExter.setCodigoDocumento(documentoExterActualizado.
-     * getCodigoDocumento());
-     * documentoExter.setFechaEmision(documentoExterActualizado.getFechaEmision());
-     * documentoExter.setFechaRecepcion(documentoExterActualizado.getFechaRecepcion(
-     * ));
-     * documentoExter.setAsuntoDoc(documentoExterActualizado.getAsuntoDoc());
-     * documentoExter.setEstadoDoc(documentoExterActualizado.getEstadoDoc());
-     * documentoExter.setNumeroFolio(documentoExterActualizado.getNumeroFolio());
-     * documentoExter.setTipoDocumento(documentoExterActualizado.getTipoDocumento())
-     * ;
-     * 
-     * return _DocExterRepository.save(documentoExter);
-     * 
-     * }
-     * return null;
-     * }
-     */
+    public DocumentResponse actualizarDocumento(DocumentRequest documentoReq) {
+        DocExterModels documentoEntity = _DocExterRepository.findById(documentoReq.getIdDoc()).get();
+
+        updatePropertiesDocument(documentoReq, documentoEntity);
+
+        DocExterModels documentoModificado = _DocExterRepository.save(documentoEntity);
+
+        return DocMapper.mapToDocResponse(documentoModificado); //
+
+    }
+
+    private void updatePropertiesDocument(DocumentRequest documentReq, DocExterModels documentEntity) {
+        Field[] Atributos = documentReq.getClass().getDeclaredFields();
+
+        for (Field atributo : Atributos) {
+            try {
+                Field properties_docEntity = documentEntity.getClass().getDeclaredField(atributo.getName());
+                properties_docEntity.setAccessible(true);
+                atributo.setAccessible(true);
+                properties_docEntity.set(documentEntity, atributo.get(documentReq));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
 
 }
