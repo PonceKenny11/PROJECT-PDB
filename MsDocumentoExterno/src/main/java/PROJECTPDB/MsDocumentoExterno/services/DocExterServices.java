@@ -6,12 +6,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import PROJECTPDB.MsDocumentoExterno.models.DTO.DocMapper;
-import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentRequest;
-import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentRequest;
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.Mapper.DocMapper;
 import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 import PROJECTPDB.MsDocumentoExterno.repository.DocExterRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +26,7 @@ public class DocExterServices {
     }
 
     public DocumentResponse ExisteOrNoDocument(Integer docID) {
-        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);// Intenta obtener un
+              Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);// Intenta obtener un
                                                                                           // documento externo de la
                                                                                           // base de datos con el metodo
                                                                                           // del repositorio
@@ -45,7 +44,7 @@ public class DocExterServices {
     }
 
     public void crearDocumento(DocumentRequest documentoRequest) {
-        var documento = DocMapper.mapToDocEntity(documentoRequest);
+        DocExterModels documento = DocMapper.mapToDocEntity(documentoRequest);
         _DocExterRepository.save(documento);
 
     }

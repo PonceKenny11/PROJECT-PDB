@@ -1,6 +1,8 @@
 package PROJECTPDB.MsDocumentoExterno.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentRequest;
-import PROJECTPDB.MsDocumentoExterno.models.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentRequest;
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentResponse;
+import PROJECTPDB.MsDocumentoExterno.Parametrizacion.MessageAbstract;
 import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 import PROJECTPDB.MsDocumentoExterno.services.DocExterServices;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/documentos/externo")
 @RequiredArgsConstructor
 @Slf4j
-public class DocExterController {
+public class DocExterController extends MessageAbstract{
 
     private final DocExterServices documentServices;
 
@@ -34,8 +37,8 @@ public class DocExterController {
             List<DocExterModels> documents = documentServices.getAll();
             return new ResponseEntity<>(documents, HttpStatus.ACCEPTED);
         } catch (Exception e) {
-            log.error("Error en Obtener datos", e);
-            return new ResponseEntity<>("Error en el Servidor, Intentelo mas tarde!", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EX, e);
+            return new ResponseEntity<>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -46,11 +49,11 @@ public class DocExterController {
             if (document != null) {
                 return new ResponseEntity<>(document, HttpStatus.OK);
             } else {
-                return new ResponseEntity<String>("No Existe Documento Externo", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<String>(MSG_EXIST, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            log.error("Error en manejo de excepciones" + e);
-            return new ResponseEntity<String>("Error en servidor para obtener datos Documentos",
+            log.error(MSG_EX+ e);
+            return new ResponseEntity<String>(MSG_SERVER,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -61,11 +64,10 @@ public class DocExterController {
             // Estas recibiendo el Request, a ese request debes mapearlo al model , El
             // request esta mapeado al model que lo considero como entity
             documentServices.crearDocumento(documento);
-            return new ResponseEntity<String>("Nuevo Documento Created Succefull!", HttpStatus.CREATED);
+            return new ResponseEntity<String>(MSG_CREATED, HttpStatus.CREATED);
         } catch (Exception e) {
-            log.error("Error de manejo de excepciones al crear el documento", e);
-            return new ResponseEntity<String>("No se pudo crear el documento. Por favor, inténtelo de nuevo más tarde.",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EX, e);
+            return new ResponseEntity<String>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -76,14 +78,18 @@ public class DocExterController {
             if(documentReq != null)
             {
                 DocumentResponse documento = documentServices.actualizarDocumento(documentReq);
-                return new ResponseEntity<>(documento, HttpStatus.OK);
+
+                Map<String, Object> resMap = new HashMap<>();
+                resMap.put(MsageUpdate(true), documento);
+      
+
+                return new ResponseEntity<>(resMap, HttpStatus.OK);
             }else{
-                return new ResponseEntity<String>("Los Campos esta vacios!", HttpStatus.CONFLICT);
+                return new ResponseEntity<String>(MsageUpdate(false), HttpStatus.CONFLICT);
             }
         } catch (Exception e) {
-            log.error("Error en manejo de excepcion", e);
-            return new ResponseEntity<>("Error en actualizar documento en el servidor",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EX, e);
+            return new ResponseEntity<>(MSG_SERVER,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -91,12 +97,14 @@ public class DocExterController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarDocumento(@PathVariable Integer id) {
         try {
-            documentServices.eliminarDocumento(id);
-            return new ResponseEntity<String>("El Documento Externo ha Sido Eliminado", HttpStatus.ACCEPTED);
+
+          documentServices.eliminarDocumento(id);
+            return new ResponseEntity<String>(MSG_DELETE, HttpStatus.ACCEPTED);
         } catch (Exception e) {
-            log.error("Error al eliminar el documento", e);
-            return new ResponseEntity<>("No se Pudo eliminar el Documento", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EX, e);
+            return new ResponseEntity<>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 }
+    

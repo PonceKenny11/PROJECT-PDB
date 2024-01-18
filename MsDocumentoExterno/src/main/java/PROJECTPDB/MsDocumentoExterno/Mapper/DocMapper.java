@@ -1,5 +1,7 @@
-package PROJECTPDB.MsDocumentoExterno.models.DTO;
+package PROJECTPDB.MsDocumentoExterno.Mapper;
 
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentRequest;
+import PROJECTPDB.MsDocumentoExterno.DTO.DocumentResponse;
 import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
 
 public class DocMapper {

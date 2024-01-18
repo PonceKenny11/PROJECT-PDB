@@ -1,4 +1,4 @@
-package PROJECTPDB.MsDocumentoExterno.models.DTO;
+package PROJECTPDB.MsDocumentoExterno.DTO;
 
 import java.sql.Date;
 
