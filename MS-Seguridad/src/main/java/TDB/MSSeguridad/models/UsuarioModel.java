@@ -15,7 +15,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name="usuarios")
+@Table(name="usuario")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,19 +24,19 @@ public class UsuarioModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idUser")
+    @Column(name="id_user")
     public int idUsuario;
 
-    @Column(name="nameUser")    
+    @Column(name="name_user")    
     public String username;
 
-    @Column(name="correoUser")
+    @Column(name="correo_user")
     public String correo;
 
-    @Column(name="passUser")
+    @Column(name="pass_user")
     public String password;
 
-    @Column(name="fechaUser")
+    @Column(name="fecha_user")
     public Date fechaCreada;
 
   
