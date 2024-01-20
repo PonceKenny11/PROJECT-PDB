@@ -7,17 +7,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import TDB.MSSeguridad.models.Entity.UsuarioModel;
-import TDB.MSSeguridad.repository.microRepository;
+import TDB.MSSeguridad.models.UsuarioModel;
+import TDB.MSSeguridad.repository.UserRepository;
+import lombok.NoArgsConstructor;
 
 @Service
-public class microService {
-    public microService(){
-        
-    }
+@NoArgsConstructor
+public class UserService {
 
     @Autowired
-    microRepository _microRepository;
+    UserRepository _microRepository;
 
     public List<UsuarioModel> getAll(){
         return (List<UsuarioModel>) _microRepository.findAll();
@@ -28,8 +27,10 @@ public class microService {
         return _microRepository.findById(id).orElse(null);
     }
 
+
     public UsuarioModel crearUsuario(UsuarioModel usuario) {
-        return _microRepository.save(usuario);
+        return usuario != null ? _microRepository.save(usuario) : null;
+
     }
     
     public void eliminarUsuario(int id) {
@@ -60,8 +61,5 @@ public class microService {
         return true;
     }
 
-    /*public UsuarioModel iniciarSesion(String correo_usuario, String password_usuario){
-        return _microRepository.findByCorreoAndPassword(correo_usuario, password_usuario);
-    }*/
 
 }

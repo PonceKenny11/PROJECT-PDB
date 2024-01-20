@@ -1,4 +1,4 @@
-package TDB.MSSeguridad.models.Entity;
+package TDB.MSSeguridad.models;
 
 import java.sql.Date;
 
@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@NonNull
 public class UsuarioModel {
     
     @Id

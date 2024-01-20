@@ -6,6 +6,8 @@ public abstract class menssages {
     protected static final String MSG_DELETE = "la cuenta usuario ha sido eliminado Correctamente";
     protected static final String MSG_SERVER = "Error Interno en el Servidor, Intentelo mas tarde";
 
+    protected static final Long TOKEN_ONE_DAY_VALIDATION = 24L * 60 * 60;
+    protected static final Long MILISEGUNDOS = 1000L;
 
     protected static String MsageUpdate(boolean resultado){
         if (resultado) {
@@ -25,7 +27,7 @@ public abstract class menssages {
 
     protected static String MsageLogin(boolean resultado){
         if (resultado) {
-            return "Usuario Authentificado!";
+            return "Usuario Authentificado! => ";
         }else{
             return "Las Credenciales son Incorrectas, Intentelo de nuevo...!";
         }

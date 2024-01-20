@@ -1,6 +1,8 @@
 package TDB.MSSeguridad.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import TDB.MSSeguridad.models.Entity.UsuarioModel;
+import TDB.MSSeguridad.DTO.UserResponse;
+import TDB.MSSeguridad.jwt.jwtToken;
+import TDB.MSSeguridad.models.UsuarioModel;
 import TDB.MSSeguridad.parametrizacion.menssages;
-import TDB.MSSeguridad.services.microService;
+import TDB.MSSeguridad.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,9 +28,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class microController extends menssages{
+public class UserController extends menssages{
 
-    private final  microService servicio;
+    private final UserService servicio;
+    private final jwtToken _Token;
 
 
     @GetMapping
@@ -84,9 +89,20 @@ public class microController extends menssages{
 
         try {
             Boolean authentificar = servicio.LoginIn(usuario.getCorreo(), usuario.getPassword());
+            String strToken = _Token.GeneracionToken(usuario);
+            UserResponse usuarioRes = new UserResponse(strToken, usuario.getCorreo(), "1d");
+
+
+            
             log.info("Post: Username {} - Password {}", usuario.getUsername(), usuario.getPassword());
+
+            Map<String, Object> resMap = new HashMap<>();
+            
+            resMap.put(MsageLogin(true), usuarioRes);
+
+
             if (authentificar == true) {
-                return new ResponseEntity<String>(MsageLogin(true), HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(resMap, HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<String>(MsageLogin(false), HttpStatus.UNAUTHORIZED);
             }
