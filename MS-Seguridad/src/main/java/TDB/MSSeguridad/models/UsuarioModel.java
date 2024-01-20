@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 
@@ -21,24 +20,23 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@NonNull
 public class UsuarioModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_usuarios")
+    @Column(name="idUser")
     public int idUsuario;
 
-    @Column(name="name_user")    
+    @Column(name="nameUser")    
     public String username;
 
-    @Column(name="correo_user")
+    @Column(name="correoUser")
     public String correo;
 
-    @Column(name="pass_user")
+    @Column(name="passUser")
     public String password;
 
-    @Column(name="fecha_creacion")
+    @Column(name="fechaUser")
     public Date fechaCreada;
 
   

@@ -76,7 +76,7 @@ public class UserController extends menssages{
         return servicio.actualizarUsuario(usuarioActualizado);
     }
 
-    @PostMapping("/registrar")
+    @PostMapping("/crear")
     public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioModel usuario) throws Exception{
         UsuarioModel user = servicio.crearUsuario(usuario);
         log.info(MSG_CREATED, user);
