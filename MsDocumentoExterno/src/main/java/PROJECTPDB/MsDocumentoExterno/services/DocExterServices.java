@@ -44,7 +44,7 @@ public class DocExterServices {
 
     public void eliminarDocumento(Integer id) {
         _DocExterRepository.deleteById(id);
-    }
+    } 
 
     public DocumentResponse actualizarDocumento(DocumentRequest documentoReq) {
         DocExterModels documentoEntity = _DocExterRepository.findById(documentoReq.getIdDoc()).get();
