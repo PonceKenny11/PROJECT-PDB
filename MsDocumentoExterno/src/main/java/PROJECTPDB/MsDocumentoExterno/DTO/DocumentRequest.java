@@ -20,9 +20,9 @@ public class DocumentRequest {
     private String CodigoDocumento;
     private Date FechaEmision;
     private Date FechaRecepcion;
-    private Boolean EstadoDocumento;
     private String AsuntoDocumento;
-    private Integer NumeroFolios;
     private String TipoDocumento;
+    private Boolean EstadoDocumento;
+    private Integer NumeroFolios;
     private Integer UsuarioModificacion;   
 }

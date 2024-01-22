@@ -15,11 +15,11 @@ public class DocumentResponse {
     private String nombreArchivo;
     private String codigoDocumento;
     private Date fechaEmision;
-    private Boolean estadoDocumento;
+    private Date fechaRecepcion;
     private String asuntoDocumento;
-    private Integer numeroFolios;
     private String tipoDocumento;
+    private Boolean estadoDocumento;
+    private Integer numeroFolios;
     private Integer usuarioModificacion;
-
 }
 //probandoooooooooo

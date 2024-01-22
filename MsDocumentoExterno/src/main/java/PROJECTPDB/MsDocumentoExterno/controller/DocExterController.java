@@ -27,46 +27,50 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/documentos/externo")
 @RequiredArgsConstructor
 @Slf4j
-public class DocExterController extends MessageAbstract{
+public class DocExterController extends MessageAbstract {
 
     private final DocExterServices documentServices;
 
     @GetMapping
     public ResponseEntity<?> getAllDocuments() {
         try {
-            List<DocExterModels> documents = documentServices.getAll();
-            return new ResponseEntity<>(documents, HttpStatus.ACCEPTED);
+            List<DocExterModels> documents = documentServices.getAccesAll();
+            return ResponseEntity.status(HttpStatus.FOUND).body(documents);
         } catch (Exception e) {
-            log.error(MSG_EX, e);
+            log.error(MSG_EXCEP, e);
             return new ResponseEntity<>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOneDocument(@PathVariable Integer id) {
+    @GetMapping("buscar/{id}")
+    public ResponseEntity<?> BuscarOneDocument(@PathVariable Integer id) {
         try {
-            DocumentResponse document = documentServices.ExisteOrNoDocument(id);
-            if (document != null) {
-                return new ResponseEntity<>(document, HttpStatus.OK);
+            if (id != null) {
+                log.info(MSG_EXIST(true), id);
+                DocumentResponse document = documentServices.ExisteOrNoDocument(id);
+                return ResponseEntity.status(HttpStatus.FOUND).body(document);
             } else {
-                return new ResponseEntity<String>(MSG_EXIST, HttpStatus.NOT_FOUND);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_EXIST(false));
             }
         } catch (Exception e) {
-            log.error(MSG_EX+ e);
-            return new ResponseEntity<String>(MSG_SERVER,
-                    HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EXCEP + e);
+            return new ResponseEntity<String>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearDocumento(@RequestBody DocumentRequest documento) {
+    public ResponseEntity<?> crearDocumento(@RequestBody DocumentRequest documentoReq) {
         try {
-            // Estas recibiendo el Request, a ese request debes mapearlo al model , El
-            // request esta mapeado al model que lo considero como entity
-            documentServices.crearDocumento(documento);
-            return new ResponseEntity<String>(MSG_CREATED, HttpStatus.CREATED);
+            // Estas recibiendo el Request, a ese request debes mapearlo al model ,
+            // Elrequest esta mapeado al model que lo considero como entity
+            if (documentoReq.equals(null)) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(MSG_EMPTY);
+            } else {
+                documentServices.crearDocumento(documentoReq);
+                return ResponseEntity.status(HttpStatus.CREATED).body(MSG_CREATED);
+            }
         } catch (Exception e) {
-            log.error(MSG_EX, e);
+            log.error(MSG_EXCEP, e);
             return new ResponseEntity<String>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -75,21 +79,19 @@ public class DocExterController extends MessageAbstract{
     @PutMapping("/edit")
     public ResponseEntity<?> cambioDocumental(@RequestBody DocumentRequest documentReq) {
         try {
-            if(documentReq != null)
-            {
+            if (documentReq != null) {
                 DocumentResponse documento = documentServices.actualizarDocumento(documentReq);
 
                 Map<String, Object> resMap = new HashMap<>();
                 resMap.put(MsageUpdate(true), documento);
-      
 
-                return new ResponseEntity<>(resMap, HttpStatus.OK);
-            }else{
-                return new ResponseEntity<String>(MsageUpdate(false), HttpStatus.CONFLICT);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(resMap);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MSG_EXIST(false));
             }
         } catch (Exception e) {
-            log.error(MSG_EX, e);
-            return new ResponseEntity<>(MSG_SERVER,HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(MSG_EXCEP, e);
+            return new ResponseEntity<>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -97,14 +99,17 @@ public class DocExterController extends MessageAbstract{
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarDocumento(@PathVariable Integer id) {
         try {
-
-          documentServices.eliminarDocumento(id);
-            return new ResponseEntity<String>(MSG_DELETE, HttpStatus.ACCEPTED);
+            if (id.equals(null)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(MSG_EXIST(false));
+            } else {
+                documentServices.eliminarDocumento(id);
+                log.info(MSG_EXIST(true), id);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(MSG_DELETE);
+            }
         } catch (Exception e) {
-            log.error(MSG_EX, e);
+            log.error(MSG_EXCEP, e);
             return new ResponseEntity<>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 }
-    

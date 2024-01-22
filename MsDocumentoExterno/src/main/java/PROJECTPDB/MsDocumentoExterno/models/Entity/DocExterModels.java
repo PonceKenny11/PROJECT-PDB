@@ -21,20 +21,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class DocExterModels {
-
+  // estos atributos deben ser idénticos a la bd
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    // estos atributos deben ser idénticos a la bd
-    private Integer id_docext;
+    private Integer id_document;
     private String nombre_archivo;
-    private String codigo_documento;
+    private String codigo_document;
     private Date fecha_emision;
     private Date fecha_recepcion;
-    private String asunto_doc;
-    private Boolean estado_doc;
-    private Integer numero_folio;
-    private String tipo_documento;
-    private Integer user_update;
+    private String asunto_document;
+    private String tipo_document;
+    private Boolean estado_document;
+    private Integer numero_folios;
+    private Integer usuario_admin;
 
 }
