@@ -48,8 +48,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
-	<!-- MSSQL -->
+		<!-- MSSQL -->
 		<dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
@@ -66,6 +65,8 @@
 			<scope>test</scope>
 		</dependency>
 		
+	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>

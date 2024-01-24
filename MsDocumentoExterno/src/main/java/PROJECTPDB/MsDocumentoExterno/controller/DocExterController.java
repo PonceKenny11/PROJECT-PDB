@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import PROJECTPDB.MsDocumentoExterno.DTO.DocumentRequest;
 import PROJECTPDB.MsDocumentoExterno.DTO.DocumentResponse;
 import PROJECTPDB.MsDocumentoExterno.Parametrizacion.MessageAbstract;
 import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
-import PROJECTPDB.MsDocumentoExterno.services.DocExterSend;
+//import PROJECTPDB.MsDocumentoExterno.services.DocExterSend;
 import PROJECTPDB.MsDocumentoExterno.services.DocExterServices;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class DocExterController extends MessageAbstract {
 
     private final DocExterServices documentServices;
+    private final KafkaTemplate<String, Integer> kafkaTemplate;
+
 
     @GetMapping
     public ResponseEntity<?> getAllDocuments() {
@@ -62,12 +66,12 @@ public class DocExterController extends MessageAbstract {
         }
     }
 
-    @GetMapping("enviar-recepcion/{id}")
+    @GetMapping("enviar-recepcion/{iddocument}")
     public ResponseEntity<?> EnviarRecepcion(@PathVariable Integer iddocument) {
         try {
             if (documentServices.ExisteOrNoDocumento(iddocument)) {
-                DocExterSend enviando = new DocExterSend();
-                enviando.PublishRecepcionarDocumento("Recepcionando documento => ", iddocument);
+                log.info(MSG_EXIST(true)+iddocument);
+                kafkaTemplate.send("spring.kafka.template.default-topic", iddocument);
                 return ResponseEntity.status(HttpStatus.FOUND).body(MSG_CORRECT);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_EXIST(false));
