@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import PROJECTPDB.MsRecepcion.Configuraciones.MessagesRecep;
 import PROJECTPDB.MsRecepcion.DTO.RequestRecep;
 import PROJECTPDB.MsRecepcion.models.RecepModels;
+import PROJECTPDB.MsRecepcion.services.IRecepServicio;
 import PROJECTPDB.MsRecepcion.services.RecepService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,18 +32,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class RecepController extends MessagesRecep{
     
     private final RecepService servicios;
-
+    private final IRecepServicio servicio2;
     @PostMapping("/register")
     public ResponseEntity<?> recepcionandoDocumento(@RequestBody RequestRecep requestRecep) {
         try {
             Map<String, String> respuestaJson = new HashMap<String, String>();
 
             if(requestRecep != null){
-                log.info(FUNC_MSG_COMPLETED(1));
+                log.info(FUNC_MSG_COMPLETED(1) +" {}", requestRecep);
 
-                servicios.setRecepModels(requestRecep);
-                Boolean hasCreated = servicios.getHasCreated();
-
+                servicio2.setRecepModels(requestRecep);
+                Boolean hasCreated = servicio2.getHasCreated();
+                log.info("obteniendo ID de Listener: {}",servicio2.getIdDocumentaso());
+                log.info("obteniendo Object deListener: {}",servicio2.getRecepModels());
             if (hasCreated != null && hasCreated.booleanValue()) {
                 respuestaJson.put("Successful:", FUNC_MSG_EXIST_DOC(1));
             } else {

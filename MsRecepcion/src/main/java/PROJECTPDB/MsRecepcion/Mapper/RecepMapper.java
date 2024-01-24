@@ -9,8 +9,8 @@ public class RecepMapper {
         var RecepEntity = RecepModels.builder()
                             .id_document(reqRecep.getIdDocument())
                             .detalle_evaluar(reqRecep.getEvaluacion())
-                            .f_ini_evaluar(reqRecep.getFInicio())
-                            .f_fin_evaluar(reqRecep.getFFin())
+                            .f_ini_evaluar(reqRecep.getFechaInicio())
+                            .f_fin_evaluar(reqRecep.getFechaFin())
                             .build();
         return RecepEntity;
     }

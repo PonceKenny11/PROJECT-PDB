@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class DocExterController extends MessageAbstract {
 
     private final DocExterServices documentServices;
-    private final KafkaTemplate<String, Integer> kafkaTemplate;
+    private final KafkaTemplate<Integer, String> kafkaTemplate;
 
 
     @GetMapping
@@ -70,8 +70,10 @@ public class DocExterController extends MessageAbstract {
     public ResponseEntity<?> EnviarRecepcion(@PathVariable Integer iddocument) {
         try {
             if (documentServices.ExisteOrNoDocumento(iddocument)) {
-                log.info(MSG_EXIST(true)+iddocument);
-                kafkaTemplate.send("spring.kafka.template.default-topic", iddocument);
+
+                String idstr = String.valueOf(iddocument);
+                log.info(MSG_EXIST(true)+idstr);
+                kafkaTemplate.send("spring.kafka.template.default-topic", idstr);
                 return ResponseEntity.status(HttpStatus.FOUND).body(MSG_CORRECT);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_EXIST(false));
