@@ -3,9 +3,10 @@ package PROJECTPDB.MsRecepcion.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import PROJECTPDB.MsRecepcion.Configuraciones.MessagesRecep;
+import PROJECTPDB.MsRecepcion.Configuraciones.RecepListener;
 import PROJECTPDB.MsRecepcion.DTO.RequestRecep;
 import PROJECTPDB.MsRecepcion.models.RecepModels;
-import PROJECTPDB.MsRecepcion.services.IRecepServicio;
+
 import PROJECTPDB.MsRecepcion.services.RecepService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 @Slf4j
 public class RecepController extends MessagesRecep{
-    
+
     private final RecepService servicios;
-    private final IRecepServicio servicio2;
+    private final RecepListener listener;
+
+
     @PostMapping("/register")
     public ResponseEntity<?> recepcionandoDocumento(@RequestBody RequestRecep requestRecep) {
         try {
@@ -40,17 +44,16 @@ public class RecepController extends MessagesRecep{
 
             if(requestRecep != null){
                 log.info(FUNC_MSG_COMPLETED(1) +" {}", requestRecep);
+                listener.setRecepModels(requestRecep);
 
-                servicio2.setRecepModels(requestRecep);
-                Boolean hasCreated = servicio2.getHasCreated();
-                log.info("obteniendo ID de Listener: {}",servicio2.getIdDocumentaso());
-                log.info("obteniendo Object deListener: {}",servicio2.getRecepModels());
-            if (hasCreated != null && hasCreated.booleanValue()) {
-                respuestaJson.put("Successful:", FUNC_MSG_EXIST_DOC(1));
-            } else {
-                respuestaJson.put("Failed:", FUNC_MSG_EXIST_DOC(0));
-                log.warn(MSG_ID);
-            }
+                Boolean hasCreated = listener.getHasCreated();
+                if (hasCreated != null && hasCreated) {
+                    respuestaJson.put("Successful:", FUNC_MSG_EXIST_DOC(1));
+                } else {
+                    respuestaJson.put("Failed:", FUNC_MSG_EXIST_DOC(0));
+                    log.warn("MSG_ID:  {}",listener.getObtienesModelo());
+                }
+                
             }else{
                 log.debug(FUNC_MSG_COMPLETED(0), requestRecep);
             }
