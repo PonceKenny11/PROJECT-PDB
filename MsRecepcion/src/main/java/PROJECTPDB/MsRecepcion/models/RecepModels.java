@@ -28,6 +28,6 @@ public class RecepModels {
     private Integer id_recepcion;
     private Integer id_document;
     private String detalle_evaluar;
-    private Date fIni_evaluar;
-    private Date fFin_evaluar;
+    private Date f_ini_evaluar;
+    private Date f_fin_evaluar;
 }

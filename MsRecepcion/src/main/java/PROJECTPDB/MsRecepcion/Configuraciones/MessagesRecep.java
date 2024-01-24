@@ -7,6 +7,7 @@ public abstract class MessagesRecep {
 
     protected static final String MSG_ID = "No hay coincidencia de ID del documento enviado por kafka";
     protected static final String MSG_EXCEPTIONS = "Exceptions no manejadas => ";
+    protected static final String MSG_SERVER = "Error Interno en el Servidor, Intentelo mas tarde";
 
     protected static final String FUNC_MSG_COMPLETED(int n){
         return n == 1 ? "El Object Recepcion tienes los datos completados": "Error => los campos estan vacios";
