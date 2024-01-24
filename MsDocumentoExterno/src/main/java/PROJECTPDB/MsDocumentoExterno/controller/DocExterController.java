@@ -18,10 +18,12 @@ import PROJECTPDB.MsDocumentoExterno.DTO.DocumentRequest;
 import PROJECTPDB.MsDocumentoExterno.DTO.DocumentResponse;
 import PROJECTPDB.MsDocumentoExterno.Parametrizacion.MessageAbstract;
 import PROJECTPDB.MsDocumentoExterno.models.Entity.DocExterModels;
+import PROJECTPDB.MsDocumentoExterno.services.DocExterSend;
 import PROJECTPDB.MsDocumentoExterno.services.DocExterServices;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/documentos/externo")
@@ -45,10 +47,12 @@ public class DocExterController extends MessageAbstract {
     @GetMapping("buscar/{id}")
     public ResponseEntity<?> BuscarOneDocument(@PathVariable Integer id) {
         try {
-            if (id != null) {
+            if (documentServices.ExisteOrNoDocumento(id)) {
                 log.info(MSG_EXIST(true), id);
-                DocumentResponse document = documentServices.ExisteOrNoDocument(id);
-                return ResponseEntity.status(HttpStatus.FOUND).body(document);
+                DocumentResponse document = documentServices.searchDocumento(id);
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("Documento Encontrado => ", document);
+                return ResponseEntity.status(HttpStatus.FOUND).body(map);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_EXIST(false));
             }
@@ -56,6 +60,23 @@ public class DocExterController extends MessageAbstract {
             log.error(MSG_EXCEP + e);
             return new ResponseEntity<String>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("enviar-recepcion/{id}")
+    public ResponseEntity<?> EnviarRecepcion(@PathVariable Integer iddocument) {
+        try {
+            if (documentServices.ExisteOrNoDocumento(iddocument)) {
+                DocExterSend enviando = new DocExterSend();
+                enviando.PublishRecepcionarDocumento("Recepcionando documento => ", iddocument);
+                return ResponseEntity.status(HttpStatus.FOUND).body(MSG_CORRECT);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MSG_EXIST(false));
+            }
+        } catch (Exception e) {
+            log.error(MSG_EXCEP + e);
+            return new ResponseEntity<String>(MSG_SERVER, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     @PostMapping("/crear")

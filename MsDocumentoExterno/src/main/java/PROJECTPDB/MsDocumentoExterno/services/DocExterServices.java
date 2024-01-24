@@ -25,16 +25,25 @@ public class DocExterServices {
         return (List<DocExterModels>) _DocExterRepository.findAll();
     }
 
-    public DocumentResponse ExisteOrNoDocument(Integer docID) {
-        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);// Intenta obtener undocumento
-                                                                                          // externo de labase de datos
-                                                                                          // con el metodo del
-                                                                                          // repositorio
-        // El resultado se coloca en un Optional porque el documento puede o no existir.
-        DocExterModels documentEntity = documentOpticional.get();
-        log.debug("Documento Opticional -> {}", documentOpticional);
-        // Verifica si el Optional tiene un valor presente, es decir, si se ha encontrado un documento con el ID proporcionado.
-        return documentOpticional.isPresent() ? DocMapper.mapToDocResponse(documentEntity) : null;
+    public DocumentResponse searchDocumento(Integer docID) {
+        // return documentOpticional.isPresent() ?DocMapper.mapToDocResponse(documentEntity) : null;
+        /*
+         * Intenta obtener undocumento externo de labase de datos con el metodo del repositorio
+         */
+        if (ExisteOrNoDocumento(docID)) {
+            Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);
+            // El resultado se coloca en un Optional porque el documento puede o no existir.
+            DocExterModels documentEntity = documentOpticional.get();
+            log.debug("Documento Opticional -> {}", documentOpticional);
+            return DocMapper.mapToDocResponse(documentEntity);
+        }
+        return null;
+    }
+
+    public Boolean ExisteOrNoDocumento(Integer docID) {
+        Optional<DocExterModels> documentOpticional = _DocExterRepository.findById(docID);
+        return documentOpticional.isPresent();// Verifica si el Optional tiene un valor presente, es decir, si se ha
+                                              // encontrado un documento con el ID proporcionado.
     }
 
     public void crearDocumento(DocumentRequest documentoRequest) {
@@ -44,7 +53,7 @@ public class DocExterServices {
 
     public void eliminarDocumento(Integer id) {
         _DocExterRepository.deleteById(id);
-    } 
+    }
 
     public DocumentResponse actualizarDocumento(DocumentRequest documentoReq) {
         DocExterModels documentoEntity = _DocExterRepository.findById(documentoReq.getIdDoc()).get();

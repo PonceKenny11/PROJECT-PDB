@@ -6,6 +6,8 @@ public abstract class MessageAbstract {
     protected static final String MSG_DELETE = "El Documento Ha sido Eliminado Correctamente";
     protected static final String MSG_SERVER = "Error Interno en el Servidor, Intentelo mas tarde";
     protected static final String MSG_EMPTY = "Los campos para la creacion del Documento estan vacios!";
+    protected static final String MSG_CORRECT = "Se Envio Correctamente a Recepcion";
+    
     
 
     protected static String MsageUpdate(boolean resultado){

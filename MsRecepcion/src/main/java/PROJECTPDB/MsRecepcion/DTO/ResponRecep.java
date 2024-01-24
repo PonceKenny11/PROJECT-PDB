@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestRecep {
+public class ResponRecep {
+    private Integer idRecep;
     private Integer idDocument;
     private String evaluacion;
     private Date fInicio;
     private Date fFin;
-
 }
