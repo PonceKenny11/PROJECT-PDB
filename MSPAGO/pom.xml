@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>PROJECT-PDB</groupId>
-	<artifactId>Ms-Despacho</artifactId>
+	<artifactId>MSPAGO</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Ms-Despacho</name>
-	<description>Ms-Despacho</description>
+	<description>MSPAGO</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

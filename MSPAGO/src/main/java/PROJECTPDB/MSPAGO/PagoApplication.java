@@ -1,13 +1,13 @@
-package PROJECTPDB.MsDespacho;
+package PROJECTPDB.MSPAGO;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MsDespachoApplication {
+public class PagoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsDespachoApplication.class, args);
+		SpringApplication.run(PagoApplication.class, args);
 	}
 
 }
